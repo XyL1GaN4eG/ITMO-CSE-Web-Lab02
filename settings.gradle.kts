@@ -1,2 +1,1 @@
-rootProject.name = "shablon_dlya_gradle"
-
+rootProject.name = "lab02"
