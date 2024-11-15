@@ -6,11 +6,13 @@ import lab02.exceptions.InvalidRequestException;
 import lab02.messaging.ParseRequest;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet("/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
     //todo: а может каждый хттп метод отдельным сервлетом сделать....
     private final Delete delete = new Delete();
@@ -33,13 +35,13 @@ public class ControllerServlet extends HttpServlet {
             //если реквестдата пришла без ошибок то закидываем реквест на сервлет areacheck
             request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
         } catch (InvalidRequestException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.valueOf(e));
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //todo: добавить отправку клиенту 200 ответа
+        //todo: добавить отправку клиенту 205 ответа
         delete.execute();
     }
 
