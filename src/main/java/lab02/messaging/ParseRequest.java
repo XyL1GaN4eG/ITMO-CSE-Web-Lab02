@@ -1,20 +1,19 @@
-package lab02.util;
+package lab02.messaging;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lab02.data.RequestData;
 import lab02.exceptions.InvalidRequestException;
+import lab02.util.RequestDataAdapter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 @NoArgsConstructor
-public class RequestReader {
+public class ParseRequest {
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(RequestData.class, new RequestDataAdapter()) //используем кастомный
             .setPrettyPrinting()

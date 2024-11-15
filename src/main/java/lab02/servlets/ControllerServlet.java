@@ -2,9 +2,8 @@ package lab02.servlets;
 
 import lab02.commands.Delete;
 import lab02.commands.Get;
-import lab02.data.RequestData;
 import lab02.exceptions.InvalidRequestException;
-import lab02.util.RequestReader;
+import lab02.messaging.ParseRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +16,7 @@ public class ControllerServlet extends HttpServlet {
     private final Delete delete = new Delete();
     private final Get get = new Get();
 
-    private final RequestReader requestReader = new RequestReader();
+    private final ParseRequest parseRequest = new ParseRequest();
 
     //todo: сделать так чтобы история хранилась в хттп сессии а не как сейчас
     @Override
@@ -29,7 +28,7 @@ public class ControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            var requestData = requestReader.getRequestData(request);
+            var requestData = parseRequest.getRequestData(request);
             request.setAttribute("requestData", requestData);
             //если реквестдата пришла без ошибок то закидываем реквест на сервлет areacheck
             request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
