@@ -1,17 +1,19 @@
 package lab02.servlets;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lab02.commands.Delete;
 import lab02.commands.Get;
 import lab02.exceptions.InvalidRequestException;
 import lab02.messaging.ParseRequest;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @WebServlet("/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
     //todo: а может каждый хттп метод отдельным сервлетом сделать....
@@ -23,6 +25,7 @@ public class ControllerServlet extends HttpServlet {
     //todo: сделать так чтобы история хранилась в хттп сессии а не как сейчас
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("loool");
         //todo: добавить отправку клиенту
         get.execute();
     }
@@ -30,18 +33,25 @@ public class ControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            log.info("loool");
             var requestData = parseRequest.getRequestData(request);
             request.setAttribute("requestData", requestData);
             //если реквестдата пришла без ошибок то закидываем реквест на сервлет areacheck
             request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
         } catch (InvalidRequestException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+
+            //todo: все пути вынести в отдельный класс с константами
+            var urlToIndexJSP = "/index.jsp";
+            var indexDispatcher = request.getRequestDispatcher(urlToIndexJSP);
+            indexDispatcher.forward(request, response);
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("loool");
         //todo: добавить отправку клиенту 205 ответа
+        // upd:(а точно надо это добавить?)
         delete.execute();
     }
 

@@ -2,13 +2,13 @@ package lab02.messaging;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jakarta.servlet.http.HttpServletRequest;
 import lab02.data.RequestData;
 import lab02.exceptions.InvalidRequestException;
 import lab02.util.RequestDataAdapter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 

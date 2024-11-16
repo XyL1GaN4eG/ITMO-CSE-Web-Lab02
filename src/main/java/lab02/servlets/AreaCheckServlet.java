@@ -2,14 +2,14 @@ package lab02.servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lab02.data.RequestData;
 import lab02.data.ResponseData;
 import lab02.messaging.ResponseBuilder;
 import lab02.util.AreaChecker;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,10 +31,12 @@ public class AreaCheckServlet extends HttpServlet {
         var handledRequestData = handleRequestData(requestData);
         var json = gson.toJson(handledRequestData);
 
+        //todo: вынести подобную отправку сообщений в отдельный метод, возможно в responseBuilder
          try (var out = response.getWriter()) {
              out.println(responseBuilder.buildHttpResponseMessage(json, 200));
              out.flush();
          } catch (IOException e) {
+             //todo: нормальная обработка ошибки
              e.printStackTrace();
          }
     }
