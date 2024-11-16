@@ -1,0 +1,1 @@
+scp build/libs/*.war itmo:~/web/lab02/wildfly-34.0.0.Final/standalone/deployments/
