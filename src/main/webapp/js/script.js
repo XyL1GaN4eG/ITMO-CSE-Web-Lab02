@@ -26,6 +26,8 @@ function redrawGraphs(radio) {
         board = createBoard();
     }
 
+    var graphColor = 'blue'
+
     board.on('down', handleDown);
 
     if (graph1) board.removeObject(graph1);
@@ -55,7 +57,7 @@ function redrawGraphs(radio) {
         baseLeft: {
             visible: false
         },
-        fillColor: 'blue',
+        fillColor: graphColor,
     });
 
     //square
@@ -76,7 +78,7 @@ function redrawGraphs(radio) {
         baseLeft: {
             visible: false
         },
-        fillColor: 'blue',
+        fillColor: graphColor,
     });
 
     //circle
@@ -97,7 +99,7 @@ function redrawGraphs(radio) {
         baseLeft: {
             visible: false
         },
-        fillColor: 'blue',
+        fillColor: graphColor,
     });
 
 }
@@ -279,37 +281,38 @@ var getMouseCoords = function (e, i) {
     },
 
     handleDown = async function (e) {
+        if (rInput.value >= 1 && rInput.value <= 4) {
+            console.log("1")
+            var canCreate = true,
+                i, coords, el;
+            console.log("2")
 
-        console.log("1")
-        var canCreate = true,
-            i, coords, el;
-        console.log("2")
-
-        if (e[JXG.touchProperty]) {
-            // index of the finger that is used to extract the coordinates
-            i = 0;
-        }
-        console.log("3")
-
-        coords = getMouseCoords(e, i);
-
-        for (el in board.objects) {
-            if (JXG.isPoint(board.objects[el]) && board.objects[el].hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
-                canCreate = false;
-                break;
+            if (e[JXG.touchProperty]) {
+                // index of the finger that is used to extract the coordinates
+                i = 0;
             }
+            console.log("3")
+
+            coords = getMouseCoords(e, i);
+
+            for (el in board.objects) {
+                if (JXG.isPoint(board.objects[el]) && board.objects[el].hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
+                    canCreate = false;
+                    break;
+                }
+            }
+            console.log("точка")
+            console.log(coords)
+            console.log("координаты точки")
+            console.log(coords.usrCoords[1], coords.usrCoords[2]);
+
+            // var point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
+            // console.log(point)
+
+            // var response =
+            await sendData([coords.usrCoords[1]], coords.usrCoords[2])
+            // generateTable(response);
         }
-        console.log("точка")
-        console.log(coords)
-        console.log("координаты точки")
-        console.log(coords.usrCoords[1], coords.usrCoords[2]);
-
-        // var point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
-        // console.log(point)
-
-        // var response =
-        await sendData([coords.usrCoords[1]], coords.usrCoords[2])
-        // generateTable(response);
 
     };
 
