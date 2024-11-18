@@ -1,46 +1,56 @@
 package lab02.servlets;
 
+import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lab02.commands.Delete;
-import lab02.commands.Get;
+import lab02.data.ResponseData;
 import lab02.exceptions.InvalidRequestException;
 import lab02.messaging.ParseRequest;
+import lab02.messaging.ResponseHandler;
+import lab02.util.SingletonGson;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-@Slf4j
+
 @WebServlet("/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
     //todo: а может каждый хттп метод отдельным сервлетом сделать....
-    private final Delete delete = new Delete();
-    private final Get get = new Get();
-
     private final ParseRequest parseRequest = new ParseRequest();
+    private final Gson gson = SingletonGson.getInstance();
 
-    //todo: сделать так чтобы история хранилась в хттп сессии а не как сейчас
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("loool");
-        //todo: добавить отправку клиенту
-        get.execute();
+        var session = request.getSession();
+        //todo: добавить обработку ошибок
+        var history = (List<ResponseData>) session.getAttribute("history");
+
+        if (history == null) {
+            history = new ArrayList<>();
+            session.setAttribute("history", history);
+        }
+
+        var json = gson.toJson(history);
+        ResponseHandler.handleResponse(response, json);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            log.info("loool");
             var requestData = parseRequest.getRequestData(request);
             request.setAttribute("requestData", requestData);
             //если реквестдата пришла без ошибок то закидываем реквест на сервлет areacheck
-            request.getRequestDispatcher("/AreaCheckServlet").forward(request, response);
+            request.getRequestDispatcher("/area-check").forward(request, response);
         } catch (InvalidRequestException e) {
 
-            //todo: все пути вынести в отдельный класс с константами
+            //todo: все пути на жспшки и сервлеты вынести в отдельный класс с константами
             var urlToIndexJSP = "/index.jsp";
             var indexDispatcher = request.getRequestDispatcher(urlToIndexJSP);
             indexDispatcher.forward(request, response);
@@ -49,11 +59,7 @@ public class ControllerServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("loool");
-        //todo: добавить отправку клиенту 205 ответа
-        // upd:(а точно надо это добавить?)
-        delete.execute();
+        var session = request.getSession();
+        session.removeAttribute("history");
     }
-
-
 }
