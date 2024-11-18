@@ -15,7 +15,7 @@ public class ResponseData {
     private long executionTime;
     private String serverTime;
 
-    public ResponseData (double x, double y, double r) {
+    public ResponseData(double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;
