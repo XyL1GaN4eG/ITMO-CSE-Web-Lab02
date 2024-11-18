@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseData {
-    private int x;
+    private double x;
     private double y;
     private double r;
     private boolean isIn;
     private long executionTime;
     private String serverTime;
 
-    public ResponseData (int x, double y, double r) {
+    public ResponseData (double x, double y, double r) {
         this.x = x;
         this.y = y;
         this.r = r;

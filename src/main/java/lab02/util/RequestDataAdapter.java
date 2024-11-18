@@ -12,9 +12,9 @@ public class RequestDataAdapter implements JsonDeserializer<RequestData> {
 
         // Парсим массив x_array из строк в int[]
         JsonArray xArray = jsonObject.getAsJsonArray("x_array");
-        int[] x = new int[xArray.size()];
+        double[] x = new double[xArray.size()];
         for (int i = 0; i < xArray.size(); i++) {
-            x[i] = Integer.parseInt(xArray.get(i).getAsString());
+            x[i] = Double.parseDouble(xArray.get(i).getAsString());
         }
 
         // Парсим y и r как double
