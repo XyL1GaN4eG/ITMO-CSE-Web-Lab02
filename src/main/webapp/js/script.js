@@ -9,9 +9,7 @@ let board = JXG.JSXGraph.initBoard("jxgbox", {
 
 let graph1, graph2, graph3, i1, i2, i3;
 
-
 function redrawGraphs() {
-
 
     if (graph1) board.removeObject(graph1);
     if (i1) board.removeObject(i1);
@@ -83,27 +81,49 @@ function redrawGraphs() {
         },
         fillColor: 'blue',
     });
-    for (let r in pointsByR) {
-        pointsByR[r].forEach(point => point.setAttribute({visible: false}));
-    }
-
-
-    if (pointsByR[radio]) {
-        pointsByR[radio].forEach(point => point.setAttribute({visible: true}));
-    }
+    // for (let r in pointsByR) {
+    //     pointsByR[r].forEach(point => point.setAttribute({visible: false}));
+    // }
+    //
+    //
+    // if (pointsByR[radio]) {
+    //     pointsByR[radio].forEach(point => point.setAttribute({visible: true}));
+    // }
 }
 
 
 redrawGraphs();
 
+//events.js
+function setupEventListeners(sendBtn, yInput, rInput, xCheckboxes, yError, rError) {
+    let yTouched = false;
+    let rTouched = false;
+    sendBtn.disabled = true;
 
+    yInput.addEventListener('input', () => {
+        yTouched = true;
+        const { isYValid, isRValid, isXValid } = validateInputs(yInput, yError, rInput, rError, xCheckboxes, yTouched, rTouched);
+        sendBtn.disabled = !(isYValid && isRValid && isXValid);
+    });
 
+    rInput.addEventListener('input', () => {
+        rTouched = true;
+        const { isYValid, isRValid, isXValid } = validateInputs(yInput, yError, rInput, rError, xCheckboxes, yTouched, rTouched);
+        sendBtn.disabled = !(isYValid && isRValid && isXValid);
+    });
+
+    xCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            const { isYValid, isRValid, isXValid } = validateInputs(yInput, yError, rInput, rError, xCheckboxes, yTouched, rTouched);
+            sendBtn.disabled = !(isYValid && isRValid && isXValid);
+        });
+    });
+}
 
 // script.js
 
 import {generateTable} from './table.js';
 import {validateInputs} from './validation.js';
-import {setupEventListeners} from './events.js';
 
 // Инициализация переменных и элементов на странице
 const sendBtn = document.getElementById('send-btn');
@@ -112,7 +132,50 @@ const rInput = document.getElementById('r-value');
 const yError = document.getElementById('y-error');
 const rError = document.getElementById('r-error');
 const xCheckboxes = document.querySelectorAll('#x-values input[type="checkbox"]');
-const url = "/fcgi-bin/hello-world.jar";
+const url = "/lab02-1.0-SNAPSHOT/controller";
+
+async function sendData(xArray, y) {
+    let r = "1.0"; // Устанавливаем значение по умолчанию для R
+
+    try {
+        if (rInput.value.trim() !== "") { // Проверяем, введено ли значение R
+            r = rInput.value.trim(); // Берем значение из rInput
+        }
+    } catch (error) {
+        console.error("Ошибка при обработке значения R:", error);
+    }
+
+    // Создаем объект с нужной структурой
+    let obj = {
+        x_array: xArray.map(x => parseFloat(x).toFixed(3)), // Преобразуем массив x в массив строк
+        y: parseFloat(y).toFixed(3),             // Преобразуем y в строку
+        r: r                 // Используем строковое значение R
+    };
+
+    console.log("жсончик реквеста");
+    console.log(JSON.stringify(obj, null, 2)); // Красиво форматируем JSON для отладки
+
+    let response = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(obj) // Отправляем сформированный JSON
+    });
+
+    return await response.json();
+}
+
+
+// Использование функции в обработчике события
+sendBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+    let x_values = [];
+    document.querySelectorAll('#x-values > input:checked').forEach((element) => {
+        x_values.push(element.value);
+    });
+
+    // Вызов вынесенной функции
+    await sendData(x_values, yInput.value, rInput.value);
+});
 
 // Валидация значений формы
 validateInputs(yInput, yError, rInput, rError, xCheckboxes, false, false);
@@ -142,20 +205,15 @@ sendBtn.addEventListener("click", async (event) => {
         x_values.push(element.value);
     });
 
-    let obj = {
-        x_array: x_values,
-        y: yInput.value,
-        r: rInput.value
-    };
+    var responseData = await sendData(
+        x_values,
+        yInput.value)
 
-    let response = await fetch(url, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(obj)
-    });
+    console.log("жсончик респонса")
+    console.log(responseData)
 
-    const responseData = await response.json();
     generateTable(responseData);
+
 });
 
 // Сбрасываем таблицу
@@ -187,7 +245,7 @@ var getMouseCoords = function (e, i) {
         return new JXG.Coords(JXG.COORDS_BY_SCREEN, pos, board);
     },
 
-    handleDown = function (e) {
+    handleDown = async function (e) {
         var canCreate = true,
             i, coords, el;
 
@@ -203,13 +261,15 @@ var getMouseCoords = function (e, i) {
                 break;
             }
         }
-        console.log(coords.usrCoords);
+        console.log("координаты точки")
+        console.log(coords.usrCoords[0], coords.usrCoords[1]);
 
-        if (canCreate) {
-            // Создаем точку и добавляем её в глобальный массив
-            var point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
-            console.log(point)
-        }
+        // var point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
+        // console.log(point)
+
+        var response = await sendData([coords.usrCoords[1]], coords.usrCoords[2])
+        generateTable(response);
+
     };
 
 board.on('down', handleDown);
