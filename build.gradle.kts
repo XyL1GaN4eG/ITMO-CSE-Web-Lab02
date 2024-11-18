@@ -14,8 +14,6 @@ repositories {
 dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
-    implementation("ch.qos.logback:logback-classic:1.2.11")
-    implementation("org.slf4j:slf4j-api:1.7.36")
 }
 
 tasks.withType<War> {
