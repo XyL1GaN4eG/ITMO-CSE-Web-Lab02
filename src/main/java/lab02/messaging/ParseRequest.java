@@ -1,23 +1,17 @@
 package lab02.messaging;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import lab02.data.RequestData;
 import lab02.exceptions.InvalidRequestException;
-import lab02.util.RequestDataAdapter;
-import lombok.NoArgsConstructor;
+import lab02.util.SingletonGson;
 import lombok.NonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@NoArgsConstructor
 public class ParseRequest {
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(RequestData.class, new RequestDataAdapter()) //используем кастомный
-            .setPrettyPrinting()
-            .create();
+    private final Gson gson = SingletonGson.getInstance();
 
     @NonNull
     public RequestData getRequestData(HttpServletRequest request) throws InvalidRequestException {
@@ -45,7 +39,6 @@ public class ParseRequest {
                 jsonBuilder.append(line);
             }
         }
-
         return jsonBuilder.toString();
     }
 }
