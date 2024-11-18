@@ -22,25 +22,24 @@
     <span>ЛАБ1</span>
 </header>
 <div class="gifs">
-    <!--    <img src="https://media.giphy.com/media/nIUN14gx8gPJB3qslB/giphy.gif" alt="Заяц" class="rabbit" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/1xlrc3eX9clGRaTUOs/giphy.gif" alt="черепок" class="skull" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/2gYhrmp3qxXnGgZ0iq/giphy.gif" alt="фиджи" class="fiji" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/yxBpVbzM3FJpm/giphy.gif" alt="конь" class="red-horse" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/gzROsII7swwrm/giphy.gif" alt="голова-дэвида" class="head-of-david"-->
-    <!--         width="400">-->
-    <!--    <img src="https://media.giphy.com/media/116mGX9b4zVHG/giphy.gif" alt="розочка" class="rose" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/H3eLO2SU8iAKqVTTGI/giphy.gif" alt="дельфин" class="dolphin" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/37Uer6MbSlFgA/giphy.gif" alt="скелет-думает" class="skeleton" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/huyVRDvLxGVUUoetHv/giphy.gif" alt="dvd" class="dvd" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/11T8aaTZZ403PW/giphy.gif" alt="нож" class="knife" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/oNYYYd0T2C0ctDBWE4/giphy.gif" alt="acab" class="acab" width="400">-->
-    <!---->
-    <!--    <img src="https://media.giphy.com/media/Ve4lrYiqpVkxOCdma6/giphy.gif" alt="smile" class="smile" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/lnDhCusOvQEeX8oDCr/giphy.gif" alt="дискета" class="diskette" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/50HKmWhN2urElj0viN/giphy.gif" alt="бургер" class="burger" width="400">-->
-    <!--    <img src="https://media.giphy.com/media/xThtayhFCUiob1hFG8/giphy.gif" alt="ноутбук" class="laptop" width="400">-->
+    <img src="https://media.giphy.com/media/nIUN14gx8gPJB3qslB/giphy.gif" alt="Заяц" class="rabbit" width="400">
+    <img src="https://media.giphy.com/media/1xlrc3eX9clGRaTUOs/giphy.gif" alt="черепок" class="skull" width="400">
+    <img src="https://media.giphy.com/media/2gYhrmp3qxXnGgZ0iq/giphy.gif" alt="фиджи" class="fiji" width="400">
+    <img src="https://media.giphy.com/media/yxBpVbzM3FJpm/giphy.gif" alt="конь" class="red-horse" width="400">
+    <img src="https://media.giphy.com/media/gzROsII7swwrm/giphy.gif" alt="голова-дэвида" class="head-of-david"
+    width="400">
+    <img src="https://media.giphy.com/media/116mGX9b4zVHG/giphy.gif" alt="розочка" class="rose" width="400">
+    <img src="https://media.giphy.com/media/H3eLO2SU8iAKqVTTGI/giphy.gif" alt="дельфин" class="dolphin" width="400">
+    <img src="https://media.giphy.com/media/37Uer6MbSlFgA/giphy.gif" alt="скелет-думает" class="skeleton" width="400">
+    <img src="https://media.giphy.com/media/huyVRDvLxGVUUoetHv/giphy.gif" alt="dvd" class="dvd" width="400">
+    <img src="https://media.giphy.com/media/11T8aaTZZ403PW/giphy.gif" alt="нож" class="knife" width="400">
+    <img src="https://media.giphy.com/media/oNYYYd0T2C0ctDBWE4/giphy.gif" alt="acab" class="acab" width="400">
+    <img src="https://media.giphy.com/media/Ve4lrYiqpVkxOCdma6/giphy.gif" alt="smile" class="smile" width="400">
+    <img src="https://media.giphy.com/media/lnDhCusOvQEeX8oDCr/giphy.gif" alt="дискета" class="diskette" width="400">
+    <img src="https://media.giphy.com/media/50HKmWhN2urElj0viN/giphy.gif" alt="бургер" class="burger" width="400">
+    <img src="https://media.giphy.com/media/xThtayhFCUiob1hFG8/giphy.gif" alt="ноутбук" class="laptop" width="400">
 
-    <!--    <img src="https://media.giphy.com/media/uid/giphy.gif" alt="" class="" width="400">-->
+    <img src="https://media.giphy.com/media/uid/giphy.gif" alt="" class="" width="400">-->
 </div>
 <div class="main-content">
     <div class="control-block">
