@@ -1,3 +1,4 @@
+[![wakatime](https://wakatime.com/badge/user/018ef218-3af8-4332-9010-91d30cbbb856/project/05b92166-a5fc-4305-9bcb-ae91f63c760b.svg)](https://wakatime.com/badge/user/018ef218-3af8-4332-9010-91d30cbbb856/project/05b92166-a5fc-4305-9bcb-ae91f63c760b)
 # ITMO-CSE-Web-Lab02
 
 ## Описание проекта
