@@ -11,6 +11,7 @@ export function validateX(xCheckboxes) {
 export function validateVar(inputElement, errorElement, minValue, maxValue, touched) {
     const value = parseFloat(inputElement.value);
     if (touched) {
+        //todo: сделать ограничение на количество цифр
         if (isNaN(value) || value < minValue || value > maxValue) {
             errorElement.textContent = `Введите число от ${minValue} до ${maxValue}`;
             errorElement.style.display = "block";

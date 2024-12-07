@@ -1,25 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%@ page import="java.util.ArrayList" %>--%>
-<%--<%@ page import="lab02.data.RequestData" %>--%>
-<%--<%@ page import="lab02.data.ResponseData" %>--%>
 <!DOCTYPE html>
 <html lang="ru" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js" charset="UTF-8"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebLab01</title>
+    <title>WebLab02</title>
     <link rel="stylesheet" href="styles.css">
     <script src="js/random-positions.js" defer></script>
     <script src="js/macos-style-windows.js" defer></script>
     <script type="module" src="js/script.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js" charset="UTF-8"></script>
-
 </head>
 <body>
 <header>
+    <span>вар 9641</span>
     <span>P3215</span>
     <span>🪲Жук🪲И. А.</span>
-    <span>ЛАБ1</span>
+    <span>ЛАБ2</span>
 </header>
 <div class="gifs">
     <img src="https://media.giphy.com/media/nIUN14gx8gPJB3qslB/giphy.gif" alt="Заяц" class="rabbit" width="400">
@@ -49,6 +46,7 @@
                 <button id="reset-btn">Сброс</button>
                 <form id="control-form">
                     <div class="form-group">
+                        <%--todo: сделать range у каждой точки по варианту второй лабы                        --%>
                         <label for="x-values">X:</label>
                         <div id="x-values">
                             <input type="checkbox" id="x-4" name="x" value="-4"><label for="x-4">-4</label>
@@ -62,7 +60,6 @@
                             <input type="checkbox" id="x4" name="x" value="4"><label for="x4">4</label>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="y-value">Y:</label>
                         <input type="text" id="y-value" name="y" placeholder="Введите значение от -5 до 3">
@@ -71,11 +68,12 @@
 
                     <div class="form-group">
                         <label for="r-value">R:</label>
-                        <input type="text" id="r-value" name="r" placeholder="Введите значение (1, 4)">
+                        <input type="text" id="r-value" name="r" placeholder="Введите значение от 1 до 4">
                         <span class="error-message" id="r-error"></span> <!-- Сообщение об ошибке для R -->
                     </div>
                 </form>
                 <button id="send-btn">Отправить</button>
+
             </div>
         </div>
     </div>
@@ -86,13 +84,10 @@
             <div id="jxgbox" style="width: 350px; height: 350px;"></div>
         </div>
     </div>
-
 </div>
-
+<%--todo: поправить ксс для таблицы--%>
 <div id="table-over-container">
     <div id="table-container"></div>
 </div>
-
-
 </body>
 </html>

@@ -1,4 +1,39 @@
+//table.js
+
+function generateTable(data) {
+    const tableContainer = document.getElementById("table-container");
+    let table = tableContainer.querySelector("table");
+
+    if (!table) {
+        table = document.createElement("table");
+        table.classList.add("data-table");
+
+        const headerRow = document.createElement("tr");
+        Object.keys(data[0]).forEach(key => {
+            const th = document.createElement("th");
+            th.textContent = key;
+            headerRow.appendChild(th);
+        });
+        table.appendChild(headerRow);
+        tableContainer.appendChild(table);
+    }
+
+    data.forEach(rowData => addRowToTable(rowData, table));
+}
+
+function addRowToTable(rowData, table) {
+    const row = document.createElement("tr");
+    Object.values(rowData).forEach(cellData => {
+        const cell = document.createElement("td");
+        cell.textContent = cellData;
+        row.appendChild(cell);
+    });
+    table.appendChild(row);
+}
+
 //graph.js
+
+const pointsByR = {};
 
 let board = createBoard(1); // Инициализация доски
 
@@ -22,11 +57,11 @@ function redrawGraphs(radio) {
     if (rIn >= 1 && rIn <= 4) {
         board = createBoard();
     } else {
-        radio = 1
+        radio = 1;
         board = createBoard();
     }
 
-    var graphColor = 'blue'
+    var graphColor = 'blue';
 
     board.on('down', handleDown);
 
@@ -36,7 +71,6 @@ function redrawGraphs(radio) {
     if (i2) board.removeObject(i2);
     if (graph3) board.removeObject(graph3);
     if (i3) board.removeObject(i3);
-
 
     //triangle
     graph1 = board.create('functiongraph', [function (x) {
@@ -102,21 +136,41 @@ function redrawGraphs(radio) {
         fillColor: graphColor,
     });
 
+    const currentR = parseFloat(radio);
+    if (pointsByR[currentR]) {
+        pointsByR[currentR].forEach(point => {
+            board.create('point', [point.x, point.y], {
+                color: point.isIn ? 'green' : 'red',
+                label: {visible: false},
+            });
+        });
+    }
+
 }
 
 var drawPoint = function (responseData) {
     redrawGraphs(rInput.value)
-    for (let i = 0; i < responseData.length; i++) {
-        const jsonElement = responseData[i];
-        var point = board.create('point', [jsonElement.x, jsonElement.y]);
-        console.log(jsonElement.isIn === true);
-        if (jsonElement.isIn === true) {
-            point.setAttribute({color: 'green'})
-        } else {
-            point.setAttribute({color: 'red'})
-        }
+    const currentR = parseFloat(rInput.value);
+
+    if (!pointsByR[currentR]) {
+        pointsByR[currentR] = [];
     }
-}
+
+    // Добавляем новые точки для текущего R
+    responseData.forEach(jsonElement => {
+        const point = {
+            x: jsonElement.x,
+            y: jsonElement.y,
+            isIn: jsonElement.isIn
+        };
+        pointsByR[currentR].push(point);
+
+        const pointObj = board.create('point', [point.x, point.y], {
+            color: point.isIn ? 'green' : 'red'
+        });
+    });
+};
+
 
 //events.js
 function setupEventListeners(sendBtn, yInput, rInput, xCheckboxes, yError, rError) {
@@ -159,7 +213,6 @@ function setupEventListeners(sendBtn, yInput, rInput, xCheckboxes, yError, rErro
 
 // script.js
 
-import {generateTable} from './table.js';
 import {validateInputs} from './validation.js';
 
 // Инициализация переменных и элементов на странице
@@ -201,8 +254,8 @@ async function sendData(xArray, y) {
         body: JSON.stringify(obj) // Отправляем сформированный JSON
     });
     var responseData = await response.json();
-    generateTable(responseData)
     drawPoint(responseData)
+    generateTable(responseData)
 }
 
 
@@ -225,18 +278,48 @@ window.addEventListener('load', fetchOnLoad);
 
 // Обработчик загрузки данных
 async function fetchOnLoad() {
-    let response = await fetch(url, {
-        method: "GET"
-    });
+    try {
+        let response = await fetch(url, {
+            method: "GET"
+        });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        console.log("Загруженные данные:", responseData);
+
+        // Генерируем таблицу
+        generateTable(responseData);
+
+        // Обновляем график
+        const currentR = parseFloat(rInput.value);
+        if (!pointsByR[currentR]) {
+            pointsByR[currentR] = [];
+        }
+
+        // Добавляем точки в массив и рисуем их на графике
+        responseData.forEach(pointData => {
+            const point = {
+                x: pointData.x,
+                y: pointData.y,
+                isIn: pointData.isIn
+            };
+            pointsByR[currentR].push(point);
+
+            // Рисуем точку на графике
+            board.create('point', [point.x, point.y], {
+                color: point.isIn ? 'green' : 'red',
+                label: { visible: false }
+            });
+        });
+    } catch (error) {
+        console.error("Ошибка при загрузке данных:", error);
     }
-
-    const responseData = await response.json();
-
-    generateTable(responseData);
 }
+
 
 // Обработчик отправки формы
 sendBtn.addEventListener("click", async (event) => {
@@ -282,37 +365,37 @@ var getMouseCoords = function (e, i) {
 
     handleDown = async function (e) {
         if (rInput.value >= 1 && rInput.value <= 4) {
-            console.log("1")
-            var canCreate = true,
-                i, coords, el;
-            console.log("2")
-
-            if (e[JXG.touchProperty]) {
-                // index of the finger that is used to extract the coordinates
-                i = 0;
+            const currentR = parseFloat(rInput.value);
+            if (!pointsByR[currentR]) {
+                pointsByR[currentR] = [];
             }
-            console.log("3")
+
+            let i, coords;
+            if (e[JXG.touchProperty]) {
+                i = 0; // Индекс пальца для сенсорных устройств
+            }
 
             coords = getMouseCoords(e, i);
 
-            for (el in board.objects) {
-                if (JXG.isPoint(board.objects[el]) && board.objects[el].hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
-                    canCreate = false;
-                    break;
+            // Сохраняем точку
+            pointsByR[currentR].push({
+                x: coords.usrCoords[1],
+                y: coords.usrCoords[2],
+                isIn: null // Это значение можно будет обновить после ответа сервера
+            });
+
+            // Отправляем запрос на сервер
+            const response = await sendData([coords.usrCoords[1]], coords.usrCoords[2]);
+            response.forEach(jsonElement => {
+                const point = board.create('point', [jsonElement.x, jsonElement.y], {
+                    color: jsonElement.isIn ? 'green' : 'red'
+                });
+
+                // Обновляем информацию о попадании точки в область
+                const pointIndex = pointsByR[currentR].findIndex(p => p.x === jsonElement.x && p.y === jsonElement.y);
+                if (pointIndex !== -1) {
+                    pointsByR[currentR][pointIndex].isIn = jsonElement.isIn;
                 }
-            }
-            console.log("точка")
-            console.log(coords)
-            console.log("координаты точки")
-            console.log(coords.usrCoords[1], coords.usrCoords[2]);
-
-            // var point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
-            // console.log(point)
-
-            // var response =
-            await sendData([coords.usrCoords[1]], coords.usrCoords[2])
-            // generateTable(response);
+            });
         }
-
     };
-

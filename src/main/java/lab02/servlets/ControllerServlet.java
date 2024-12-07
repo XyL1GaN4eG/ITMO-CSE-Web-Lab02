@@ -11,7 +11,6 @@ import lab02.exceptions.InvalidRequestException;
 import lab02.messaging.ParseRequest;
 import lab02.messaging.ResponseHandler;
 import lab02.util.SingletonGson;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.List;
 
 @WebServlet("/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
-    //todo: а может каждый хттп метод отдельным сервлетом сделать....
     private final ParseRequest parseRequest = new ParseRequest();
     private final Gson gson = SingletonGson.getInstance();
 
@@ -28,7 +26,6 @@ public class ControllerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var session = request.getSession();
-        //todo: добавить обработку ошибок
         var history = (List<ResponseData>) session.getAttribute("history");
 
         if (history == null) {
@@ -50,7 +47,6 @@ public class ControllerServlet extends HttpServlet {
             request.getRequestDispatcher("/area-check").forward(request, response);
         } catch (InvalidRequestException e) {
 
-            //todo: все пути на жспшки и сервлеты вынести в отдельный класс с константами
             var urlToIndexJSP = "/index.jsp";
             var indexDispatcher = request.getRequestDispatcher(urlToIndexJSP);
             indexDispatcher.forward(request, response);
@@ -60,6 +56,8 @@ public class ControllerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         var session = request.getSession();
-        session.removeAttribute("history");
+        var history = (List<ResponseData>) session.getAttribute("history");
+        history = new ArrayList<>();
+        session.setAttribute("history", history);
     }
 }

@@ -13,16 +13,6 @@
         <servlet-class>lab02.servlets.AreaCheckServlet</servlet-class>
     </servlet>
 
-<!--    <servlet>-->
-<!--        <servlet-name>History</servlet-name>-->
-<!--        <servlet-class>lab02.servlets.HistoryServlet</servlet-class>-->
-<!--    </servlet>-->
-
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>History</servlet-name>-->
-<!--        <url-pattern>/history</url-pattern>-->
-<!--    </servlet-mapping>-->
-
     <servlet-mapping>
         <servlet-name>AreaCheck</servlet-name>
         <url-pattern>/area-check</url-pattern>
@@ -31,14 +21,5 @@
         <servlet-name>Controller</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
-
-<!--    <filter>-->
-<!--        <filter-name>LastModifiedFilter</filter-name>-->
-<!--        <filter-class>lab02.filters.LastModifiedFilter</filter-class>-->
-<!--    </filter>-->
-<!--    <filter-mapping>-->
-<!--        <filter-name>LastModifiedFilter</filter-name>-->
-<!--        <url-pattern>/history</url-pattern>-->
-<!--    </filter-mapping>-->
 
 </web-app>

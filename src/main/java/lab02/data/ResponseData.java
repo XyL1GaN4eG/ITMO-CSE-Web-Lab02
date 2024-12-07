@@ -2,6 +2,7 @@ package lab02.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -14,6 +15,10 @@ public class ResponseData {
     private boolean isIn;
     private long executionTime;
     private String serverTime;
+
+    public boolean getIsIn() {
+        return isIn;
+    }
 
     public ResponseData(double x, double y, double r) {
         this.x = x;
